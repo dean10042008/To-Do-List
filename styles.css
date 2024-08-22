@@ -146,8 +146,12 @@ input::placeholder {
 }
 
 @media screen and (width <= 580px) {
-    #title {
-        margin-top: 40px;
+    .deleteButton:hover,
+    .doneButton:hover,
+    #addButton:hover {
+        scale: 1;
+        color: var(--button-color);
+        border: 1px solid var(--border-color);
     }
 
     .add-task {
@@ -168,18 +172,14 @@ input::placeholder {
     }
 }
 
-@media screen and (width <= 440px) {
-    .deleteButton:hover,
-    .doneButton:hover,
-    #addButton:hover {
-        scale: 1;
-        color: var(--button-color);
-        border: 1px solid var(--border-color);
-    }
-    
+@media screen and (width <= 440px) { 
     .add-task input::placeholder {
         font-size: 14px;
         padding-left: 3px;
+    }
+
+    .add-task input {
+        font-size: 14px;
     }
 
     .add-task {
@@ -189,6 +189,7 @@ input::placeholder {
 
     .item p {
         max-width: 75%;
+        font-size: 13px;
     }
 }
 
@@ -204,7 +205,8 @@ input::placeholder {
         max-width: 95%;
     }
         
-    .add-task input::placeholder {
+    .add-task input::placeholder,
+    .add-task input {
         font-size: 16px;
     }
 
