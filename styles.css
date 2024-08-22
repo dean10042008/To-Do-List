@@ -173,20 +173,6 @@ input::placeholder {
 }
 
 @media screen and (width <= 440px) { 
-    .add-task input::placeholder {
-        font-size: 14px;
-        padding-left: 3px;
-    }
-
-    .add-task input {
-        font-size: 14px;
-    }
-
-    .add-task {
-        padding: 7px 4px;
-        border-radius: 8px;
-    }
-
     .item p {
         max-width: 75%;
         font-size: 13px;
