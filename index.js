@@ -3,11 +3,11 @@ const plusButton = document.getElementById('addButton');
 const itemContainer = document.querySelector('.items-container');
 let initial = document.getElementById('initial-item');
 
-let id = 0;
+let i = 0;
 
 function addTask() {
 
-    id++;
+    i++;
 
     let text = inputField.value;
 
@@ -21,17 +21,26 @@ function addTask() {
             <p>${text}</p>
                         
             <div class="button-wrapper">
-                <button id="done-${id}" class="doneButton" type="button"><i class="fa-solid fa-check"></i></button>
-                <button id="delete-${id}" class="deleteButton" type="button"><i class="fa-solid fa-trash"></i></button>
+                <button id="done-${i}" class="doneButton" type="button"><i class="fa-solid fa-check"></i></button>
+                <button id="delete-${i}" class="deleteButton" type="button"><i class="fa-solid fa-trash"></i></button>
             </div>
         `;
+
+        if (localStorage.getItem('item') === null) {
+            localStorage.setItem('item', '[]');
+        }
+
+        let old = JSON.parse(localStorage.getItem('item'));
+        old.push(text);
+        localStorage.setItem('item', JSON.stringify(old));
+        
 
         inputField.value = '';
 
         itemContainer.appendChild(div);
 
-        document.getElementById(`done-${id}`).addEventListener("click", () => setTaskAsDone(div));
-        document.getElementById(`delete-${id}`).addEventListener("click", () => deleteTask(div));
+        document.getElementById(`done-${i}`).addEventListener("click", () => setTaskAsDone(div));
+        document.getElementById(`delete-${i}`).addEventListener("click", () => deleteTask(div));
     }
 }
 
@@ -49,6 +58,11 @@ function setTaskAsDone(div) {
         </s>
     `;
 
+    let localStorageArr = JSON.parse(localStorage.getItem('item'));
+    let index = localStorageArr.indexOf(old);
+    localStorageArr[index] = `${old}-done`;
+    localStorage.setItem('item', JSON.stringify(localStorageArr));
+
     button.style.border = '1px solid gray';
     button.style.scale = '1';
     button.disabled = true;
@@ -56,9 +70,75 @@ function setTaskAsDone(div) {
 }
 
 function deleteTask(div) {
+    let text = div.querySelector('p').textContent;
+
+    let localStorageArr = JSON.parse(localStorage.getItem('item'));
+    const indexText = localStorageArr.indexOf(text);
+    
+    if (indexText !== -1) {
+        localStorageArr.splice(indexText, 1);
+    }
+    else {
+        const indexDoneText = localStorageArr.indexOf(`${text}-done`);
+        localStorageArr.splice(indexDoneText, 1);
+    }
+    
+    localStorage.setItem('item', JSON.stringify(localStorageArr));
+
     div.remove();
     
     if (itemContainer.children.length === 1) {
         initial.style.display = 'block';
     }
 }
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    let arr = JSON.parse(localStorage.getItem('item'));
+    let i = 0;
+
+    arr.forEach((item) => {
+        initial.style.display = 'none';
+
+        i++;
+
+        if (item.includes('-done')) {
+            let text = item.split('-done')[0];
+
+            let div = document.createElement('div');
+            div.className = 'item';
+
+            div.innerHTML = `
+                <p><s>${text}</s></p>
+                            
+                <div class="button-wrapper">
+                    <button id="done-${i}" class="doneButton" type="button" disabled style="border: 1px solid gray; scale: 1; color: gray"><i class="fa-solid fa-check"></i></button>
+                    <button id="delete-${i}" class="deleteButton" type="button"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `;
+
+            itemContainer.appendChild(div);
+
+            document.getElementById(`done-${i}`).addEventListener("click", () => setTaskAsDone(div));
+            document.getElementById(`delete-${i}`).addEventListener("click", () => deleteTask(div));
+        }
+        else {
+            let div = document.createElement('div');
+            div.className = 'item';
+
+            div.innerHTML = `
+                <p>${item}</p>
+                            
+                <div class="button-wrapper">
+                    <button id="done-${i}" class="doneButton" type="button"><i class="fa-solid fa-check"></i></button>
+                    <button id="delete-${i}" class="deleteButton" type="button"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            `;
+
+            itemContainer.appendChild(div);
+
+            document.getElementById(`done-${i}`).addEventListener("click", () => setTaskAsDone(div));
+            document.getElementById(`delete-${i}`).addEventListener("click", () => deleteTask(div));
+        }
+    })
+})

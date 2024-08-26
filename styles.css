@@ -191,6 +191,10 @@ input::placeholder {
 }
 
 @media screen and (width <= 370px) {
+    #initial-item {
+        font-size: 26px;
+    }
+
     .items-container {
         max-width: 90vw;
     }
