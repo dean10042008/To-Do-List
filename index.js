@@ -1,11 +1,14 @@
 const inputField = document.getElementById('task');
 const plusButton = document.getElementById('addButton');
 const itemContainer = document.querySelector('.items-container');
+const form = document.getElementById('form');
 let initial = document.getElementById('initial-item');
 
 let i = 0;
 
-function addTask() {
+function addTask(event) {
+
+    event.preventDefault();
 
     i++;
 
@@ -44,7 +47,7 @@ function addTask() {
     }
 }
 
-plusButton.addEventListener('click', addTask);
+form.addEventListener('submit', addTask);
 
 function setTaskAsDone(div) {
     let button = div.querySelector('.doneButton');
