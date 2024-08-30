@@ -48,7 +48,8 @@ button:hover {
     border: 1px solid orange;
 }
 
-.deleteButton:hover {
+.deleteButton:hover,
+.negativeButton:hover {
     color: red;
     border: 1px solid red;
 }
@@ -168,7 +169,8 @@ input::placeholder {
     .doneButton:hover,
     #addButton:hover,
     .editButton:hover,
-    .finishEditing:hover {
+    .finishEditing:hover,
+    .negativeButton:hover {
         scale: 1;
         color: var(--button-color);
         border: 1px solid var(--border-color);
@@ -218,10 +220,6 @@ input::placeholder {
 }
 
 @media screen and (width <= 370px) {
-    .finishEditing {
-        margin-top: 16px;
-    }
-
     #initial-item {
         font-size: 26px;
     }
@@ -232,7 +230,6 @@ input::placeholder {
 
     .item {
         flex-direction: column;
-        padding: 7px 13px;
         gap: 0;
     }
 

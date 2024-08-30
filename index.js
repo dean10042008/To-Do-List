@@ -84,23 +84,37 @@ function editTask(div) {
     input.className = 'input';
     input.id = `input-${id}`;
 
-    let button = document.createElement('button');
-    button.className = 'finishEditing';
-    button.id = `edit-${id}`;
+    let positiveButton = document.createElement('button');
+    positiveButton.className = 'finishEditing';
+    positiveButton.id = `edit-${id}`;
 
-    let icon = document.createElement('i');
-    icon.className = 'ri-check-double-line';
+    let negativeButton = document.createElement('button');
+    negativeButton.className = 'negativeButton';
+    negativeButton.id = `cancel-${id}`;
 
-    button.appendChild(icon);
+    let positiveIcon = document.createElement('i');
+    positiveIcon.className = 'ri-check-double-line';
+    positiveButton.appendChild(positiveIcon);
+
+    let negativeIcon = document.createElement('i');
+    negativeIcon.className = 'fa-solid fa-xmark';
+    negativeButton.appendChild(negativeIcon);
 
     div.innerHTML = `
         ${input.outerHTML}
 
-        ${button.outerHTML}
+        <div class="button-wrapper">
+            ${positiveButton.outerHTML}
+            ${negativeButton.outerHTML}
+        </div>
     `;
 
     document.getElementById(`edit-${id}`).addEventListener('click', () => {
         finishEdit(div, document.getElementById(`input-${id}`).value, buttons, previousText, id);
+    });
+
+    document.getElementById(`cancel-${id}`).addEventListener('click', () => {
+        cancelEdit(div, buttons, previousText, id);
     });
 }
 
@@ -132,6 +146,32 @@ function finishEdit(div, newText, buttons, prevText, i) {
     }
     
     localStorage.setItem('item', JSON.stringify(localStorageArr));
+
+    document.getElementById(`done-${i}`).addEventListener("click", () => setTaskAsDone(div));
+    document.getElementById(`delete-${i}`).addEventListener("click", () => deleteTask(div));
+    document.getElementById(`edit-${i}`).addEventListener("click", () => editTask(div));
+}
+
+function cancelEdit(div, buttons, previousText, i) {
+    let localStorageArr = JSON.parse(localStorage.getItem('item'));
+    const indexText = localStorageArr.indexOf(previousText);
+    
+    if (indexText !== -1) {
+        div.innerHTML = `
+            <p>${previousText}</p>
+
+            ${buttons.outerHTML}
+        `;
+    }
+    else {
+        div.innerHTML = `
+            <p>
+                <s>${previousText}</s>
+            </p>
+
+            ${buttons.outerHTML}
+        `;
+    }
 
     document.getElementById(`done-${i}`).addEventListener("click", () => setTaskAsDone(div));
     document.getElementById(`delete-${i}`).addEventListener("click", () => deleteTask(div));
