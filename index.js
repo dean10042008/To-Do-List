@@ -120,7 +120,7 @@ function finishEdit(div, newText, buttons, prevText, i) {
     }
     else {
         const indexDoneText = localStorageArr.indexOf(`${newText}-done`);
-        localStorageArr.splice(indexDoneText, 1, `${newText}-done`);
+        localStorageArr.splice(indexDoneText - 1, 1, `${newText}-done`);
 
         div.innerHTML = `
             <p>
